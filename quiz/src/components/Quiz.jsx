@@ -8,13 +8,67 @@ export default function Quiz() {
   const [selected, setSelected] = useState(null);
   const [validated, setValidated] = useState(false);
   const [started, setStarted] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch("https://api.jsonbin.io/v3/b/69e153c636566621a8bf9613")
-      .then((res) => res.json())
-      .then((data) => setQuestions(data.record))
-      .catch((err) => console.log(err));
+    const apiKey = import.meta.env.VITE_JSONBIN_API_KEY;
+    console.log('JSONBin key loaded:', apiKey?.slice(0, 10) + '...');
+
+    fetch("https://api.jsonbin.io/v3/b/69e3dc99856a6821894aa9ee", {
+      headers: {
+        'X-Master-Key': apiKey,
+      },
+    })
+      .then((res) => {
+        console.log('Response status:', res.status);
+        if (!res.ok) {
+          return res.json().then((data) => {
+            const message = data?.message || 'Error desconocido';
+            throw new Error(`${res.status} ${message}`);
+          });
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log('Data from API:', data);
+        setQuestions(data.record || data || []);
+      })
+      .catch((err) => {
+        console.log('Error fetching:', err);
+        setError(err.message);
+        setQuestions([]);
+      });
   }, []);
+
+  const launchConfetti = () => {
+    const baseSettings = {
+      particleCount: 50,
+      startVelocity: 40,
+      spread: 140,
+      ticks: 220,
+      gravity: 0.75,
+      decay: 0.92,
+    };
+
+    confetti({
+      ...baseSettings,
+      origin: { x: 0.5, y: 0.2 },
+      colors: ['#f97316', '#22c55e', '#38bdf8', '#a855f7', '#f43f5e'],
+      angle: 90,
+    });
+    confetti({
+      ...baseSettings,
+      origin: { x: 0.2, y: 0.3 },
+      colors: ['#fde68a', '#60a5fa', '#34d399', '#f472b6'],
+      angle: 60,
+    });
+    confetti({
+      ...baseSettings,
+      origin: { x: 0.8, y: 0.3 },
+      colors: ['#f87171', '#8b5cf6', '#38bdf8', '#fb7185'],
+      angle: 120,
+    });
+  };
 
   const handleAnswer = (index) => {
     if (validated) return;
@@ -23,7 +77,7 @@ export default function Quiz() {
     setValidated(true);
 
     if (index === questions[current].correctAnswer) {
-      confetti();
+      launchConfetti();
     }
   };
 
@@ -37,11 +91,23 @@ export default function Quiz() {
     return (
       <div className="container">
         <div className="card">
-          <h1>🎯 Bienvenido al Quiz</h1>
-          <p>¿Estás listo para probar tus conocimientos?</p>
+          <h1 className="quiz-page-title">Quiz</h1>
+          <h2 className="quiz-titulo">¡Bienvenido al Quiz!</h2>
+          <p className="quiz-texto">¿Estás listo para probar tus conocimientos y divertirte?</p>
           <button className="startButton" onClick={() => setStarted(true)}>
             Iniciar Quiz
           </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="container">
+        <div className="card">
+          <h2 className="loading">Error al cargar el quiz</h2>
+          <p>{error}</p>
         </div>
       </div>
     );
