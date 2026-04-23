@@ -1,49 +1,160 @@
-/* SaludosWayner.css */
-.saludo-container {
-  max-width: 450px;
-  margin: 24px auto;
-  padding: 20px 24px;
-  border-radius: 15px;
-  background: linear-gradient(135deg, #6d83ff, #99b6ff);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
-  color: white;
-  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  text-align: center;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+/* 🌈 Fondo estilo Apple — suave, pastel, vivo */
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui;
+
+  background: 
+    radial-gradient(circle at 15% 20%, #dbeafe 0%, transparent 40%),
+    radial-gradient(circle at 85% 30%, #e0e7ff 0%, transparent 45%),
+    radial-gradient(circle at 50% 80%, #fce7f3 0%, transparent 45%),
+    linear-gradient(180deg, #f9fafb, #eef2f7);
+
+  background-attachment: fixed;
 }
 
-.saludo-container:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.28);
+/* 🌟 CONTENEDOR GLASS */
+.saludo-container {
+  position: relative;
+  max-width: 480px;
+  margin: 4rem auto;
+  padding: 2.5rem 2rem;
+  border-radius: 36px;
+
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(30px) saturate(160%);
+  -webkit-backdrop-filter: blur(30px) saturate(160%);
+
+  border: 1px solid rgba(255, 255, 255, 0.5);
+
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.15),
+    inset 0 2px 8px rgba(255, 255, 255, 0.7),
+    inset 0 -4px 12px rgba(255, 255, 255, 0.25);
+
+  overflow: hidden;
+  text-align: center;
+
+  animation: floatGlass 12s ease-in-out infinite;
+}
+
+/* ✨ LUZ AMBIENTAL INTERNA */
+.saludo-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background:
+    radial-gradient(circle at 20% 10%, rgba(255,255,255,0.9), transparent 35%),
+    radial-gradient(circle at 80% 90%, rgba(255,255,255,0.4), transparent 45%);
+
+  opacity: 0.7;
+}
+
+/* ✨ BRILLO SUPERIOR */
+.saludo-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 15%;
+  width: 70%;
+  height: 1px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,0.9),
+    transparent
+  );
+}
+
+/* 🧠 TITULOS */
+.saludo-page-title {
+  font-size: clamp(2rem, 4vw, 2.6rem);
+  font-weight: 700;
+  color: #0a0a0a;
+  letter-spacing: -0.03em;
 }
 
 .saludo-titulo {
-  margin: 0 0 12px;
-  font-size: 1.9rem;
-  letter-spacing: 0.9px;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 600;
+  color: #1a1a1a;
 }
 
 .saludo-texto {
-  margin: 0;
-  font-size: 1.1rem;
+  margin: 1rem 0 2rem;
+  font-size: 1.05rem;
+  color: #444;
   line-height: 1.6;
-  opacity: 0.95;
 }
 
+/* 🔘 BOTON PASTEL APPLE */
 .saludo-boton {
-  margin-top: 14px;
-  display: inline-block;
-  padding: 9px 18px;
-  border: 0;
+  position: relative;
+  padding: 0.9rem 2rem;
   border-radius: 999px;
-  background: #f6f9ff;
-  color: #2c3c7f;
+  border: none;
+
+  background: linear-gradient(
+    135deg,
+    rgba(167, 139, 250, 0.4),
+    rgba(96, 165, 250, 0.4),
+    rgba(244, 114, 182, 0.3)
+  );
+
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  color: #0a0a0a;
   font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.15),
+    inset 0 2px 6px rgba(255,255,255,0.8);
+
+  transition: all 0.3s ease;
+}
+
+/* brillo */
+.saludo-boton::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+
+  background: linear-gradient(
+    120deg,
+    rgba(255,255,255,0.9),
+    transparent 50%
+  );
+
+  opacity: 0.6;
 }
 
 .saludo-boton:hover {
-  background: #ffffff;
-  transform: translateY(-1px);
+  transform: translateY(-3px) scale(1.04);
+
+  box-shadow:
+    0 15px 40px rgba(0,0,0,0.2),
+    inset 0 2px 8px rgba(255,255,255,1);
+}
+
+.saludo-boton:active {
+  transform: scale(0.97);
+}
+
+/* 🌊 ANIMACION SUAVE */
+@keyframes floatGlass {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+/* 📱 RESPONSIVE */
+@media (max-width: 640px) {
+  .saludo-container {
+    margin: 2rem 1rem;
+    padding: 2rem 1.5rem;
+    border-radius: 28px;
+  }
 }
